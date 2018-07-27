@@ -81,27 +81,18 @@ plt.xlabel("Time(year-month)")
 plt.ylabel("Passenger count")
 plt.legend(loc='best')
 
-# Year wise customer count plot
-train.groupby('year')['Count'].mean().plot.bar()
-
-# Month wise customer count plot
-train.groupby('month')['Count'].mean().plot.bar()
+train.groupby('year')['Count'].mean().plot.bar()    # Year wise customer count plot
+train.groupby('month')['Count'].mean().plot.bar()   # Month wise customer count plot
 
 # Monthly mean of each year seperately
 temp=train.groupby(['year', 'month'])['Count'].mean()
 temp.plot(figsize=(15,5), title= 'Passenger Count(Monthwise)', fontsize=14)
 
-# Day Wise customer count plot
-train.groupby('day')['Count'].mean().plot.bar()
+train.groupby('day')['Count'].mean().plot.bar()     # Day Wise customer count plot
+train.groupby('Hour')['Count'].mean().plot.bar()    # Hour wise customer count plot
+train.groupby('weekend')['Count'].mean().plot.bar() # Weekend and Weekday Plot
+train.groupby('day of week')['Count'].mean().plot.bar()  # Every day of the week customer count plot
 
-# Hour wise customer count plot
-train.groupby('Hour')['Count'].mean().plot.bar()
-
-# Weekend and Weekday Plot
-train.groupby('weekend')['Count'].mean().plot.bar()
-
-# Every day of the week customer count plot
-train.groupby('day of week')['Count'].mean().plot.bar()
 
 # ---------------------------  AGGREGATE HOURLY DATA TO DAILY, WEEKLY AND MONTHLY  -------------------------------------- #
 train=train.drop('ID',1)
@@ -120,6 +111,31 @@ hourly.Count.plot(figsize=(15,8), title= 'Hourly', fontsize=14, ax=axs[0])
 daily.Count.plot(figsize=(15,8), title= 'Daily', fontsize=14, ax=axs[1])
 weekly.Count.plot(figsize=(15,8), title= 'Weekly', fontsize=14, ax=axs[2])
 monthly.Count.plot(figsize=(15,8), title= 'Monthly', fontsize=14, ax=axs[3])
+plt.show()
+
+# Working on Daily Time Series on Test and Train Data
+test.Timestamp = pd.to_datetime(test.Datetime,format='%d-%m-%Y %H:%M') 
+test.index = test.Timestamp 
+
+test = test.resample('D').mean()    # Converting to daily mean
+
+train.Timestamp = pd.to_datetime(train.Datetime,format='%d-%m-%Y %H:%M') 
+train.index = train.Timestamp
+
+train = train.resample('D').mean()  # Converting to daily mean
+
+# ---------------------------  SPLITTING DATA IN TRAINNG AND VALIDATION PART  -------------------------------------- #
+
+# To divide the data into training and validation set, Taking last 3 months as the validation data and rest for training data.
+Train=train.ix['2012-08-25':'2014-06-24']
+valid=train.ix['2014-06-25':'2014-09-25']
+
+# Plot Train and Validation Data
+Train.Count.plot(figsize=(15,8), title= 'Daily Ridership', fontsize=14, label='train')
+valid.Count.plot(figsize=(15,8), title= 'Daily Ridership', fontsize=14, label='valid')
+plt.xlabel("Datetime")
+plt.ylabel("Passenger count")
+plt.legend(loc='best')
 plt.show()
 
 
