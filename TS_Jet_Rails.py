@@ -29,3 +29,27 @@ test=pd.read_csv("Test_0qrQsBZ.csv")
 # Make Copy of the original Dataframe to process on it furthur
 train_original=train.copy()
 test_original=test.copy()
+
+# ---------------------------  CHECK DATA for TYPE, SHAPE  -------------------------------------- #
+train.columns, test.columns
+
+train.dtypes, test.dtypes
+
+train.shape, test.shape
+
+# ---------------------------  FEATURE EXTRACTION  -------------------------------------- #
+
+# Convert the Datetime Object in DataFrame to Date and Time format for Time Series Analysis
+train['Datetime'] = pd.to_datetime(train.Datetime,format='%d-%m-%Y %H:%M') 
+test['Datetime'] = pd.to_datetime(test.Datetime,format='%d-%m-%Y %H:%M') 
+test_original['Datetime'] = pd.to_datetime(test_original.Datetime,format='%d-%m-%Y %H:%M')
+train_original['Datetime'] = pd.to_datetime(train_original.Datetime,format='%d-%m-%Y %H:%M')
+
+# Furthur breakdown Date and Time in Year, Month, Day , Hours
+for i in (train, test, test_original, train_original):
+    i['year']=i.Datetime.dt.year 
+    i['month']=i.Datetime.dt.month 
+    i['day']=i.Datetime.dt.day
+    
+    
+    i['Hour']=i.Datetime.dt.hour 
