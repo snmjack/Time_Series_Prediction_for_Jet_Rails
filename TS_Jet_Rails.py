@@ -1,3 +1,4 @@
+# ---------------------------  IMPORTS  -------------------------------------- #
 # Import Mathematical Libraries
 import pandas as pd         # For DataFrames          
 import numpy as np          # For mathematical calculations
@@ -14,6 +15,8 @@ warnings.filterwarnings("ignore")
 # Import DateTime Libraries
 from datetime import datetime    # To access datetime
 
+
+# ---------------------------  LOAD DATA  -------------------------------------- #
 ''' After Downloading the data from
 https://datahack.analyticsvidhya.com/contest/practice-problem-time-series-2/
 We have two - Train_SU63ISt and Test_0qrQsBZ CSV files
